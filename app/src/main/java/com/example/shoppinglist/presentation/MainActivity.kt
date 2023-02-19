@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         val buttonAdd = findViewById<FloatingActionButton>(R.id.addButton)
         buttonAdd.setOnClickListener {
-            val intent = ShopItemActivity.getAddIntent(this)
+            val intent = ShopItemFragment.getAddIntent(this)
             startActivity(intent)
         }
 
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             //viewModel.removeShopItem(it)
         }
         adapter.onShopItemClickListener = {
-            val intent = ShopItemActivity.getEditIntent(this,it.id)
+            val intent = ShopItemFragment.getEditIntent(this,it.id)
             startActivity(intent)
         }
 
