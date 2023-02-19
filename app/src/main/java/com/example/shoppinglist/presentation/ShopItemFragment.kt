@@ -94,7 +94,13 @@ class ShopItemFragment:Fragment() {
     }
 
     private fun editMode(id:Int) {
-        viewModel.getShopItem(id)
+        viewModel.getShopItem(id).observe(viewLifecycleOwner){
+            if (binding.tiName.text.toString() == "" && binding.tiCount.text.toString() == ""){
+                binding.tiName.setText(it.name)
+                binding.tiCount.setText(it.count.toString())
+            }
+        }
+
         binding.buttonAddShopItem.setOnClickListener {
             viewModel.editShopItem(
                 binding.tiName.text.toString(),
@@ -119,17 +125,9 @@ class ShopItemFragment:Fragment() {
         }
 
         viewModel.canClose.observe(viewLifecycleOwner){
-            //requireActivity().finish()
-
             activity?.onBackPressed()
         }
 
-        viewModel.shopItem.observe(viewLifecycleOwner){
-            if (binding.tiName.text.toString() == "" && binding.tiCount.text.toString() == ""){
-                binding.tiName.setText(it.name)
-                binding.tiCount.setText(it.count.toString())
-            }
-        }
     }
 
     override fun onDestroyView() {

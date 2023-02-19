@@ -1,14 +1,13 @@
 package com.example.shoppinglist.presentation
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.shoppinglist.data.ShopListRepositoryImpl
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import com.example.shoppinglist.data.AppDatabase
 import com.example.shoppinglist.domain.*
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = ShopListRepositoryImpl
-
+    private val repository = AppDatabase.getInstance(application)
 
     private val removeShopItemUseCase = RemoveShopItemUseCase(repository)
     private val getShopListUseCase = GetShopListUseCase(repository)
