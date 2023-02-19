@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
 
         adapter.onShopItemLongClickListener = {
             viewModel.changeShopItemState(it)
-            //viewModel.removeShopItem(it)
         }
         adapter.onShopItemClickListener = {
             if (is_landscape){

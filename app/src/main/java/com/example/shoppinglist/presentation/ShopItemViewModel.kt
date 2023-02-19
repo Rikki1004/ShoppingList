@@ -1,17 +1,17 @@
 package com.example.shoppinglist.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.shoppinglist.data.ShopListRepositoryImpl
+import com.example.shoppinglist.data.AppDatabase
 import com.example.shoppinglist.domain.AddShopItemUseCase
 import com.example.shoppinglist.domain.EditShopItemUseCase
 import com.example.shoppinglist.domain.GetShopItemUseCase
 import com.example.shoppinglist.domain.ShopItem
-import java.util.InputMismatchException
 
-class ShopItemViewModel : ViewModel() {
-    private val repository = ShopListRepositoryImpl
+class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository = AppDatabase.getInstance(application)
     private val addShopItemUseCase =  AddShopItemUseCase(repository)
     private val editShopItemUseCase =  EditShopItemUseCase(repository)
     private val getShopItemUseCase =  GetShopItemUseCase(repository)
@@ -24,7 +24,7 @@ class ShopItemViewModel : ViewModel() {
     val countError :LiveData<Boolean>
         get() = _countError
 
-    private val _shopItem = MutableLiveData<ShopItem>()
+    private lateinit var _shopItem : LiveData<ShopItem>
     val shopItem :LiveData<ShopItem>
         get() = _shopItem
 
@@ -53,10 +53,9 @@ class ShopItemViewModel : ViewModel() {
             }
         }
     }
-    fun getShopItem(id:Int){
-        val item = getShopItemUseCase.getItem(id)
-        _shopItem.value = item
-
+    fun getShopItem(id:Int) : LiveData<ShopItem>{
+        _shopItem = getShopItemUseCase.getItem(id)
+        return shopItem
     }
 
 
