@@ -12,7 +12,9 @@ class ShopItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityShopItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        checkIntent()
+
+        if (savedInstanceState == null)
+            checkIntent()
     }
 
 
@@ -35,13 +37,13 @@ class ShopItemActivity : AppCompatActivity() {
 
     private fun addMode() {
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_container,ShopItemFragment.getInstanceAddItem())
+            .replace(R.id.shop_item_container,ShopItemFragment.getInstanceAddItem())
             .commit()
     }
 
     private fun editMode(id:Int) {
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_container,ShopItemFragment.getInstanceEditItem(id))
+            .replace(R.id.shop_item_container,ShopItemFragment.getInstanceEditItem(id))
             .commit()
 
     }

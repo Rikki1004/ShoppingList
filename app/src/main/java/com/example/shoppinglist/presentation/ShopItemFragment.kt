@@ -115,6 +115,7 @@ class ShopItemFragment:Fragment() {
 
         viewModel.canClose.observe(viewLifecycleOwner){
             //requireActivity().finish()
+
             activity?.onBackPressed()
         }
 
