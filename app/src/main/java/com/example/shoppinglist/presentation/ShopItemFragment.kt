@@ -28,22 +28,27 @@ class ShopItemFragment:Fragment() {
     ): View? {
         _binding = FragmentShopItemBinding.inflate(inflater, container, false)
         return binding.root
-        //return inflater.inflate(R.layout.fragment_shop_item,container,false)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(NAME,binding.tiName.text.toString())
+        outState.putString(COUNT,binding.tiCount.text.toString())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //binding = FragmentShopItemBinding.inflate(layoutInflater)
-        //setContentView(binding.root)
-
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         checkInstance()
         startObservers()
         startListeners()
 
-    }
+        if (savedInstanceState != null){
+            binding.tiName.setText(savedInstanceState.getString(NAME))
+            binding.tiCount.setText(savedInstanceState.getString(COUNT))
+        }
 
+    }
 
     private fun startListeners() {
         binding.tiName.addTextChangedListener(object : TextWatcher {
@@ -120,8 +125,10 @@ class ShopItemFragment:Fragment() {
         }
 
         viewModel.shopItem.observe(viewLifecycleOwner){
-            binding.tiName.setText(it.name)
-            binding.tiCount.setText(it.count.toString())
+            if (binding.tiName.text.toString() == "" && binding.tiCount.text.toString() == ""){
+                binding.tiName.setText(it.name)
+                binding.tiCount.setText(it.count.toString())
+            }
         }
     }
 
@@ -135,6 +142,9 @@ class ShopItemFragment:Fragment() {
         const val EXTRA_PAR_ID = "extra_id"
         const val MODE_EDIT = "edit"
         const val MODE_ADD = "add"
+
+        const val NAME = "name"
+        const val COUNT = "count"
 
         fun getAddIntent(context: Context) : Intent {
             val intent = Intent(context,ShopItemActivity::class.java)
